@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vibe Check — Mood to Design Generator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#05050a;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;font-family:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+#vc{width:100%;max-width:680px}
+.vc-title{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:#f0f0f5;line-height:1.1}
+.vc-sub{font-size:.9rem;color:rgba(240,240,245,.45);margin-top:.35rem;margin-bottom:1.75rem}
+.vc-label{font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(240,240,245,.4);display:block;margin-bottom:.55rem}
+.vc-input{width:100%;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);border-radius:12px;padding:.9rem 1.15rem;font-size:1rem;color:#f0f0f5;outline:none;transition:border-color 200ms}
+.vc-input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.18)}
+.vc-input::placeholder{color:rgba(240,240,245,.28)}
+.vc-results{margin-top:1.6rem;display:none}
+.vc-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.3rem 1.4rem;margin-bottom:1rem;backdrop-filter:blur(8px)}
+@keyframes vcIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.vc-card{animation:vcIn .32s cubic-bezier(.4,0,.2,1) both}
+.vc-swatches{display:flex;gap:.55rem;flex-wrap:wrap}
+.vc-swatch{width:52px;height:52px;border-radius:9px;display:flex;flex-direction:column;justify-content:flex-end;padding:3px 4px;cursor:default;transition:transform 150ms}
+.vc-swatch:hover{transform:scale(1.08)}
+.vc-hex{font-size:.52rem;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9);font-weight:700;font-family:monospace;line-height:1.3}
+.vc-swatch-label{font-size:.48rem;color:rgba(255,255,255,.75);text-shadow:0 1px 2px rgba(0,0,0,.8);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.vc-font-pair{font-size:1.05rem;font-weight:700;color:#f0f0f5}
+.vc-font-note{font-size:.82rem;color:rgba(240,240,245,.55);margin-top:.3rem}
+.vc-style-name{font-size:1.05rem;font-weight:700;color:#f0f0f5;margin-bottom:.5rem}
+.vc-bullets{padding-left:1.2rem}
+.vc-bullets li{font-size:.84rem;color:rgba(240,240,245,.65);margin:.2rem 0;line-height:1.5}
+.vc-pre{background:rgba(0,0,0,.5);border-radius:9px;padding:1rem;font-size:.77rem;color:#a5f3fc;font-family:"Fira Code","Cascadia Code","JetBrains Mono",monospace;overflow-x:auto;white-space:pre;line-height:1.6;margin-bottom:.75rem}
+.vc-copy-btn{background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.35);color:#a5b4fc;border-radius:9px;padding:.5rem 1.1rem;cursor:pointer;font-size:.82rem;transition:all 150ms;font-family:inherit}
+.vc-copy-btn:hover{background:rgba(99,102,241,.3);border-color:rgba(99,102,241,.6)}
+.vc-skeleton{background:rgba(255,255,255,.07);border-radius:6px;height:1em;animation:vcSkel 1.3s ease-in-out infinite}
+@keyframes vcSkel{0%,100%{opacity:.35}50%{opacity:.7}}
+</style>
+</head>
+<body>
+<div id="vc">
+  <div class="vc-title">Vibe Check</div>
+  <div class="vc-sub">Type a mood or aesthetic — get a full design system instantly</div>
+  <label class="vc-label" for="vi">Your Vibe</label>
+  <input class="vc-input" id="vi" placeholder="Try: dark hacker, cozy coffee, luxury fintech, vaporwave...">
+  <div class="vc-results" id="vr">
+    <div class="vc-card" id="vc-palette" style="animation-delay:0ms">
+      <div class="vc-label">Color Palette</div>
+      <div class="vc-swatches" id="vs"></div>
+    </div>
+    <div class="vc-card" id="vc-fonts" style="animation-delay:80ms">
+      <div class="vc-label">Font Pairing</div>
+      <div id="vf"></div>
+    </div>
+    <div class="vc-card" id="vc-style" style="animation-delay:160ms">
+      <div class="vc-label">UI Style</div>
+      <div id="vstyle"></div>
+    </div>
+    <div class="vc-card" style="animation-delay:240ms">
+      <div class="vc-label">CSS Variables — Copy &amp; Paste</div>
+      <pre class="vc-pre" id="vcss"></pre>
+      <button class="vc-copy-btn" id="vcopy">Copy CSS</button>
+    </div>
+  </div>
+</div>
+<script>
+const PROFILES = [
+  {
+    k: ["dark","hacker","cyber","terminal","matrix","code","cli"],
+    p: [{h:"#00ff41",l:"Primary"},{h:"#003b00",l:"Secondary"},{h:"#00cc33",l:"Accent"},{h:"#0d0d0d",l:"Background"},{h:"#c8ffc8",l:"Text"}],
+    f: {h:"JetBrains Mono", b:"JetBrains Mono", n:"Monospace authenticity — every char intentional"},
+    s: {n:"Terminal Dark", b:["Monochrome green on true black","Scanline grid texture","Glitch micro-animations on hover"]},
+    c:"--color-primary: #00ff41;
+--color-secondary: #003b00;
+--color-accent: #00cc33;
+--color-bg: #0d0d0d;
+--color-text: #c8ffc8;
+--font-heading: 'JetBrains Mono';
+--font-body: 'JetBrains Mono';"
+  },
+  {
+    k: ["cozy","warm","coffee","cafe","autumn","brown","cottage"],
+    p: [{h:"#d97706",l:"Amber"},{h:"#78350f",l:"Brown"},{h:"#f59e0b",l:"Honey"},{h:"#fef3c7",l:"Cream"},{h:"#292524",l:"Dark"}],
+    f: {h:"Playfair Display", b:"Lora", n:"Warm serifs that feel like a printed page"},
+    s: {n:"Warm Editorial", b:["Amber and cream warmth","Rounded corners, soft drop shadows","Generous margins and leading"]},
+    c:"--color-primary: #d97706;
+--color-secondary: #78350f;
+--color-accent: #f59e0b;
+--color-bg: #fef3c7;
+--color-text: #292524;
+--font-heading: 'Playfair Display';
+--font-body: 'Lora';"
+  },
+  {
+    k: ["luxury","premium","fintech","banking","gold","wealth","finance"],
+    p: [{h:"#1e3a5f",l:"Navy"},{h:"#d4af37",l:"Gold"},{h:"#2d5f8a",l:"Accent"},{h:"#f8f9fa",l:"White"},{h:"#1a1a2e",l:"Dark"}],
+    f: {h:"Cormorant Garamond", b:"Montserrat", n:"Elegant serif authority with clean sans clarity"},
+    s: {n:"Luxury Finance", b:["Navy and gold command trust","Subtle motion, nothing flashy","WCAG AAA contrast everywhere"]},
+    c:"--color-navy: #1e3a5f;
+--color-gold: #d4af37;
+--color-accent: #2d5f8a;
+--color-bg: #f8f9fa;
+--color-text: #1a1a2e;
+--font-heading: 'Cormorant Garamond';
+--font-body: 'Montserrat';"
+  },
+  {
+    k: ["playful","kids","fun","colorful","bright","happy","cartoon"],
+    p: [{h:"#f43f5e",l:"Coral"},{h:"#fbbf24",l:"Yellow"},{h:"#38bdf8",l:"Sky"},{h:"#ffffff",l:"White"},{h:"#1e293b",l:"Dark"}],
+    f: {h:"Nunito", b:"Nunito", n:"Rounded and approachable — smiles in every letter"},
+    s: {n:"Playful Bright", b:["Saturated primary palette","Bouncy spring animations","Bold rounded shapes, no sharp edges"]},
+    c:"--color-coral: #f43f5e;
+--color-yellow: #fbbf24;
+--color-sky: #38bdf8;
+--color-bg: #ffffff;
+--color-text: #1e293b;
+--font-heading: 'Nunito';
+--font-body: 'Nunito';"
+  },
+  {
+    k: ["zen","minimal","clean","focus","calm","simple","breathe"],
+    p: [{h:"#fafafa",l:"White"},{h:"#1a1a1a",l:"Black"},{h:"#6b8f71",l:"Sage"},{h:"#e5e5e5",l:"Border"},{h:"#737373",l:"Muted"}],
+    f: {h:"Inter", b:"Inter", n:"System-neutral — the design disappears, content stays"},
+    s: {n:"Zen Minimal", b:["Near-white canvas, one sage accent","Silence between elements","Zero decorative complexity"]},
+    c:"--color-bg: #fafafa;
+--color-text: #1a1a1a;
+--color-sage: #6b8f71;
+--color-border: #e5e5e5;
+--color-muted: #737373;
+--font-heading: 'Inter';
+--font-body: 'Inter';"
+  },
+  {
+    k: ["nature","eco","organic","green","forest","earth","plant","garden"],
+    p: [{h:"#14532d",l:"Forest"},{h:"#4d7c0f",l:"Moss"},{h:"#86efac",l:"Mint"},{h:"#fefce8",l:"Cream"},{h:"#1c1917",l:"Earth"}],
+    f: {h:"Merriweather", b:"Source Sans Pro", n:"Grounded and trustworthy, like a sustainability report"},
+    s: {n:"Organic Earth", b:["Forest greens and warm cream","Textured feels, irregular shapes","Slow, deliberate transitions"]},
+    c:"--color-forest: #14532d;
+--color-moss: #4d7c0f;
+--color-mint: #86efac;
+--color-bg: #fefce8;
+--color-text: #1c1917;
+--font-heading: 'Merriweather';
+--font-body: 'Source Sans Pro';"
+  },
+  {
+    k: ["space","cosmic","galaxy","nebula","sci","scifi","star","astro"],
+    p: [{h:"#0f0a1e",l:"Void"},{h:"#7c3aed",l:"Violet"},{h:"#06b6d4",l:"Cyan"},{h:"#1e1b4b",l:"Midnight"},{h:"#e0e7ff",l:"Starlight"}],
+    f: {h:"Space Grotesk", b:"DM Sans", n:"Geometric and futuristic without feeling cold"},
+    s: {n:"Cosmic Dark", b:["Deep space with nebula color pops","Gradient glows and ambient orbs","Particle-inspired detail work"]},
+    c:"--color-void: #0f0a1e;
+--color-violet: #7c3aed;
+--color-cyan: #06b6d4;
+--color-midnight: #1e1b4b;
+--color-starlight: #e0e7ff;
+--font-heading: 'Space Grotesk';
+--font-body: 'DM Sans';"
+  },
+  {
+    k: ["retro","vaporwave","80s","synthwave","neon","pink","glitch"],
+    p: [{h:"#ec4899",l:"Pink"},{h:"#8b5cf6",l:"Purple"},{h:"#06b6d4",l:"Cyan"},{h:"#1a0a2e",l:"Dark"},{h:"#fdf4ff",l:"Light"}],
+    f: {h:"Bebas Neue", b:"Rajdhani", n:"Bold condensed display meets retro futurism"},
+    s: {n:"Vaporwave", b:["Pink-purple gradient neons on deep dark","Grid floors, sunset horizons","CRT scanlines, glitch hover states"]},
+    c:"--color-pink: #ec4899;
+--color-purple: #8b5cf6;
+--color-cyan: #06b6d4;
+--color-dark: #1a0a2e;
+--color-light: #fdf4ff;
+--font-heading: 'Bebas Neue';
+--font-body: 'Rajdhani';"
+  },
+  {
+    k: ["health","medical","wellness","trust","hospital","clinic","care"],
+    p: [{h:"#ffffff",l:"White"},{h:"#0ea5e9",l:"Blue"},{h:"#10b981",l:"Mint"},{h:"#f0f9ff",l:"Sky"},{h:"#0f172a",l:"Dark"}],
+    f: {h:"Nunito Sans", b:"Nunito Sans", n:"Approachable and trustworthy — calm authority"},
+    s: {n:"Medical Clean", b:["Clinical white with trust blue","Open spacing for easy reading","WCAG AA on all interactive elements"]},
+    c:"--color-white: #ffffff;
+--color-blue: #0ea5e9;
+--color-mint: #10b981;
+--color-bg: #f0f9ff;
+--color-text: #0f172a;
+--font-heading: 'Nunito Sans';
+--font-body: 'Nunito Sans';"
+  },
+  {
+    k: ["bold","startup","growth","saas","hustle","energy","launch","product"],
+    p: [{h:"#2563eb",l:"Electric"},{h:"#f97316",l:"Orange"},{h:"#1d4ed8",l:"Deep"},{h:"#0f172a",l:"Near Black"},{h:"#f8fafc",l:"Off White"}],
+    f: {h:"Plus Jakarta Sans", b:"Inter", n:"Modern SaaS confidence — built to convert"},
+    s: {n:"Bold Growth", b:["Electric blue and orange high energy","Strong typographic hierarchy","Motion-forward, scroll-triggered reveals"]},
+    c:"--color-blue: #2563eb;
+--color-orange: #f97316;
+--color-deep: #1d4ed8;
+--color-bg: #0f172a;
+--color-text: #f8fafc;
+--font-heading: 'Plus Jakarta Sans';
+--font-body: 'Inter';"
+  }
+];
+
+function match(q) {
+  const s = q.toLowerCase().trim();
+  if (!s) return null;
+  let best = PROFILES[4], top = 0;
+  for (const p of PROFILES) {
+    const sc = p.k.filter(k => s.includes(k)).length;
+    if (sc > top) { top = sc; best = p; }
+  }
+  return best;
+}
+
+let timer;
+document.getElementById("vi").addEventListener("input", e => {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    const v = e.target.value.trim();
+    const res = document.getElementById("vr");
+    if (v.length < 2) { res.style.display = "none"; return; }
+    const p = match(v);
+    res.style.display = "block";
+
+    // Reset animations
+    document.querySelectorAll(".vc-card").forEach(c => {
+      c.style.animation = "none";
+      void c.offsetHeight;
+      c.style.animation = "";
+    });
+
+    // Swatches
+    document.getElementById("vs").innerHTML = p.p.map(c =>
+      `<div class="vc-swatch" style="background:${c.h}" title="${c.l}: ${c.h}">
+        <span class="vc-hex">${c.h}</span>
+        <span class="vc-swatch-label">${c.l}</span>
+      </div>`
+    ).join("");
+
+    // Fonts
+    document.getElementById("vf").innerHTML =
+      `<div class="vc-font-pair">${p.f.h} &nbsp;/&nbsp; ${p.f.b}</div>
+       <div class="vc-font-note">${p.f.n}</div>`;
+
+    // Style
+    document.getElementById("vstyle").innerHTML =
+      `<div class="vc-style-name">${p.s.n}</div>
+       <ul class="vc-bullets">${p.s.b.map(b => `<li>${b}</li>`).join("")}</ul>`;
+
+    // CSS vars
+    document.getElementById("vcss").textContent = p.c;
+
+    // Copy button
+    document.getElementById("vcopy").onclick = () => {
+      navigator.clipboard.writeText(p.c).then(() => {
+        const btn = document.getElementById("vcopy");
+        btn.textContent = "Copied!";
+        btn.style.background = "rgba(99,102,241,.45)";
+        setTimeout(() => {
+          btn.textContent = "Copy CSS";
+          btn.style.background = "";
+        }, 2000);
+      });
+    };
+  }, 300);
+});
+</script>
+</body>
+</html>
