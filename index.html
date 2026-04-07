@@ -86,86 +86,231 @@ body{background:#05050a;min-height:100vh;display:flex;align-items:flex-start;jus
 <script>
 const PROFILES = [
   {
-    k: ["dark","hacker","cyber","terminal","matrix","code","cli"],
+    k: ["dark","hacker","cyber","terminal","matrix","code","cli","developer","dev","programmer"],
     p: [{h:"#00ff41",l:"Primary"},{h:"#003b00",l:"Secondary"},{h:"#00cc33",l:"Accent"},{h:"#0d0d0d",l:"Background"},{h:"#c8ffc8",l:"Text"}],
     f: {h:"JetBrains Mono", b:"JetBrains Mono", n:"Monospace authenticity — every char intentional"},
     s: {n:"Terminal Dark", b:["Monochrome green on true black","Scanline grid texture","Glitch micro-animations on hover"]},
     c:"--color-primary: #00ff41;\n--color-secondary: #003b00;\n--color-accent: #00cc33;\n--color-bg: #0d0d0d;\n--color-text: #c8ffc8;\n--font-heading: 'JetBrains Mono';\n--font-body: 'JetBrains Mono';"
   },
   {
-    k: ["cozy","warm","coffee","cafe","autumn","brown","cottage"],
+    k: ["cozy","warm","coffee","cafe","autumn","brown","cottage","hygge","fireplace","tea","bookshop"],
     p: [{h:"#d97706",l:"Amber"},{h:"#78350f",l:"Brown"},{h:"#f59e0b",l:"Honey"},{h:"#fef3c7",l:"Cream"},{h:"#292524",l:"Dark"}],
     f: {h:"Playfair Display", b:"Lora", n:"Warm serifs that feel like a printed page"},
     s: {n:"Warm Editorial", b:["Amber and cream warmth","Rounded corners, soft drop shadows","Generous margins and leading"]},
     c:"--color-primary: #d97706;\n--color-secondary: #78350f;\n--color-accent: #f59e0b;\n--color-bg: #fef3c7;\n--color-text: #292524;\n--font-heading: 'Playfair Display';\n--font-body: 'Lora';"
   },
   {
-    k: ["luxury","premium","fintech","banking","gold","wealth","finance"],
+    k: ["luxury","premium","fintech","banking","gold","wealth","finance","exclusive","high-end","elite"],
     p: [{h:"#1e3a5f",l:"Navy"},{h:"#d4af37",l:"Gold"},{h:"#2d5f8a",l:"Accent"},{h:"#f8f9fa",l:"White"},{h:"#1a1a2e",l:"Dark"}],
     f: {h:"Cormorant Garamond", b:"Montserrat", n:"Elegant serif authority with clean sans clarity"},
     s: {n:"Luxury Finance", b:["Navy and gold command trust","Subtle motion, nothing flashy","WCAG AAA contrast everywhere"]},
     c:"--color-navy: #1e3a5f;\n--color-gold: #d4af37;\n--color-accent: #2d5f8a;\n--color-bg: #f8f9fa;\n--color-text: #1a1a2e;\n--font-heading: 'Cormorant Garamond';\n--font-body: 'Montserrat';"
   },
   {
-    k: ["playful","kids","fun","colorful","bright","happy","cartoon"],
+    k: ["playful","kids","fun","colorful","bright","happy","cartoon","child","toy","game"],
     p: [{h:"#f43f5e",l:"Coral"},{h:"#fbbf24",l:"Yellow"},{h:"#38bdf8",l:"Sky"},{h:"#ffffff",l:"White"},{h:"#1e293b",l:"Dark"}],
     f: {h:"Nunito", b:"Nunito", n:"Rounded and approachable — smiles in every letter"},
     s: {n:"Playful Bright", b:["Saturated primary palette","Bouncy spring animations","Bold rounded shapes, no sharp edges"]},
     c:"--color-coral: #f43f5e;\n--color-yellow: #fbbf24;\n--color-sky: #38bdf8;\n--color-bg: #ffffff;\n--color-text: #1e293b;\n--font-heading: 'Nunito';\n--font-body: 'Nunito';"
   },
   {
-    k: ["zen","minimal","clean","focus","calm","simple","breathe"],
-    p: [{h:"#fafafa",l:"White"},{h:"#1a1a1a",l:"Black"},{h:"#6b8f71",l:"Sage"},{h:"#e5e5e5",l:"Border"},{h:"#737373",l:"Muted"}],
+    k: ["zen","minimal","clean","focus","calm","simple","breathe","white","quiet","neutral"],
+    p: [{h:"#fafafa",l:"White"},{h:"#1a1a1a",l:"Black"},{h:"#6b8f71",l:"Sage"},{h:"#f0f0f0",l:"Off-White"},{h:"#737373",l:"Muted"}],
     f: {h:"Inter", b:"Inter", n:"System-neutral — the design disappears, content stays"},
     s: {n:"Zen Minimal", b:["Near-white canvas, one sage accent","Silence between elements","Zero decorative complexity"]},
     c:"--color-bg: #fafafa;\n--color-text: #1a1a1a;\n--color-sage: #6b8f71;\n--color-border: #e5e5e5;\n--color-muted: #737373;\n--font-heading: 'Inter';\n--font-body: 'Inter';"
   },
   {
-    k: ["nature","eco","organic","green","forest","earth","plant","garden"],
+    k: ["nature","eco","organic","green","forest","earth","plant","garden","sustainable","botanical","jungle"],
     p: [{h:"#14532d",l:"Forest"},{h:"#4d7c0f",l:"Moss"},{h:"#86efac",l:"Mint"},{h:"#fefce8",l:"Cream"},{h:"#1c1917",l:"Earth"}],
     f: {h:"Merriweather", b:"Source Sans Pro", n:"Grounded and trustworthy, like a sustainability report"},
     s: {n:"Organic Earth", b:["Forest greens and warm cream","Textured feels, irregular shapes","Slow, deliberate transitions"]},
     c:"--color-forest: #14532d;\n--color-moss: #4d7c0f;\n--color-mint: #86efac;\n--color-bg: #fefce8;\n--color-text: #1c1917;\n--font-heading: 'Merriweather';\n--font-body: 'Source Sans Pro';"
   },
   {
-    k: ["space","cosmic","galaxy","nebula","sci","scifi","star","astro"],
+    k: ["space","cosmic","galaxy","nebula","sci","scifi","star","astro","universe","alien","futuristic"],
     p: [{h:"#0f0a1e",l:"Void"},{h:"#7c3aed",l:"Violet"},{h:"#06b6d4",l:"Cyan"},{h:"#1e1b4b",l:"Midnight"},{h:"#e0e7ff",l:"Starlight"}],
     f: {h:"Space Grotesk", b:"DM Sans", n:"Geometric and futuristic without feeling cold"},
     s: {n:"Cosmic Dark", b:["Deep space with nebula color pops","Gradient glows and ambient orbs","Particle-inspired detail work"]},
     c:"--color-void: #0f0a1e;\n--color-violet: #7c3aed;\n--color-cyan: #06b6d4;\n--color-midnight: #1e1b4b;\n--color-starlight: #e0e7ff;\n--font-heading: 'Space Grotesk';\n--font-body: 'DM Sans';"
   },
   {
-    k: ["retro","vaporwave","80s","synthwave","neon","pink","glitch"],
+    k: ["retro","vaporwave","80s","synthwave","neon","glitch","arcade","90s","pixel","nostalgic"],
     p: [{h:"#ec4899",l:"Pink"},{h:"#8b5cf6",l:"Purple"},{h:"#06b6d4",l:"Cyan"},{h:"#1a0a2e",l:"Dark"},{h:"#fdf4ff",l:"Light"}],
     f: {h:"Bebas Neue", b:"Rajdhani", n:"Bold condensed display meets retro futurism"},
     s: {n:"Vaporwave", b:["Pink-purple gradient neons on deep dark","Grid floors, sunset horizons","CRT scanlines, glitch hover states"]},
     c:"--color-pink: #ec4899;\n--color-purple: #8b5cf6;\n--color-cyan: #06b6d4;\n--color-dark: #1a0a2e;\n--color-light: #fdf4ff;\n--font-heading: 'Bebas Neue';\n--font-body: 'Rajdhani';"
   },
   {
-    k: ["health","medical","wellness","trust","hospital","clinic","care"],
+    k: ["health","medical","wellness","trust","hospital","clinic","care","doctor","pharma","therapy"],
     p: [{h:"#ffffff",l:"White"},{h:"#0ea5e9",l:"Blue"},{h:"#10b981",l:"Mint"},{h:"#f0f9ff",l:"Sky"},{h:"#0f172a",l:"Dark"}],
     f: {h:"Nunito Sans", b:"Nunito Sans", n:"Approachable and trustworthy — calm authority"},
     s: {n:"Medical Clean", b:["Clinical white with trust blue","Open spacing for easy reading","WCAG AA on all interactive elements"]},
     c:"--color-white: #ffffff;\n--color-blue: #0ea5e9;\n--color-mint: #10b981;\n--color-bg: #f0f9ff;\n--color-text: #0f172a;\n--font-heading: 'Nunito Sans';\n--font-body: 'Nunito Sans';"
   },
   {
-    k: ["bold","startup","growth","saas","hustle","energy","launch","product"],
+    k: ["bold","startup","growth","saas","hustle","energy","launch","product","agency","disrupt"],
     p: [{h:"#2563eb",l:"Electric"},{h:"#f97316",l:"Orange"},{h:"#1d4ed8",l:"Deep"},{h:"#0f172a",l:"Near Black"},{h:"#f8fafc",l:"Off White"}],
     f: {h:"Plus Jakarta Sans", b:"Inter", n:"Modern SaaS confidence — built to convert"},
     s: {n:"Bold Growth", b:["Electric blue and orange high energy","Strong typographic hierarchy","Motion-forward, scroll-triggered reveals"]},
     c:"--color-blue: #2563eb;\n--color-orange: #f97316;\n--color-deep: #1d4ed8;\n--color-bg: #0f172a;\n--color-text: #f8fafc;\n--font-heading: 'Plus Jakarta Sans';\n--font-body: 'Inter';"
+  },
+  {
+    k: ["streetwear","hip hop","hiphop","urban","street","rap","sneaker","skate","drip","hypebeast"],
+    p: [{h:"#111111",l:"Black"},{h:"#ffffff",l:"White"},{h:"#ef4444",l:"Red"},{h:"#1a1a1a",l:"Off Black"},{h:"#d4d4d4",l:"Silver"}],
+    f: {h:"Bebas Neue", b:"Barlow Condensed", n:"Tight and loud — built for drops and hype"},
+    s: {n:"Street Culture", b:["Black and white with one hard accent","All-caps display type, zero compromise","Raw grid layouts, editorial cutouts"]},
+    c:"--color-black: #111111;\n--color-white: #ffffff;\n--color-red: #ef4444;\n--color-bg: #1a1a1a;\n--color-silver: #d4d4d4;\n--font-heading: 'Bebas Neue';\n--font-body: 'Barlow Condensed';"
+  },
+  {
+    k: ["kawaii","pastel","cute","soft","pink","sweet","anime","aesthetic","bubbly","dreamy"],
+    p: [{h:"#f9a8d4",l:"Blush"},{h:"#c4b5fd",l:"Lavender"},{h:"#6ee7b7",l:"Mint"},{h:"#fff0f6",l:"Petal"},{h:"#4a1942",l:"Dark"}],
+    f: {h:"Nunito", b:"Poppins", n:"Soft and bubbly — designed to feel like a hug"},
+    s: {n:"Kawaii Pastel", b:["Blush pinks and soft lavenders","Rounded everything, zero sharp edges","Sparkle and bloom micro-details"]},
+    c:"--color-blush: #f9a8d4;\n--color-lavender: #c4b5fd;\n--color-mint: #6ee7b7;\n--color-bg: #fff0f6;\n--color-text: #4a1942;\n--font-heading: 'Nunito';\n--font-body: 'Poppins';"
+  },
+  {
+    k: ["dark academia","academia","gothic","moody","vintage","library","scholarly","literary","ink","parchment"],
+    p: [{h:"#1c1408",l:"Ink"},{h:"#8b6914",l:"Brass"},{h:"#c9a84c",l:"Gold"},{h:"#f5efe0",l:"Parchment"},{h:"#2d1b00",l:"Sepia"}],
+    f: {h:"EB Garamond", b:"EB Garamond", n:"Timeless serif — feels like borrowed library books"},
+    s: {n:"Dark Academia", b:["Ink and parchment with brass accents","Dense text, classical proportions","Candlelit shadow and texture"]},
+    c:"--color-ink: #1c1408;\n--color-brass: #8b6914;\n--color-gold: #c9a84c;\n--color-bg: #f5efe0;\n--color-text: #2d1b00;\n--font-heading: 'EB Garamond';\n--font-body: 'EB Garamond';"
+  },
+  {
+    k: ["tropical","beach","summer","ocean","surf","island","coastal","paradise","sunset","caribbean"],
+    p: [{h:"#0891b2",l:"Ocean"},{h:"#f59e0b",l:"Sun"},{h:"#10b981",l:"Lagoon"},{h:"#fffbeb",l:"Sand"},{h:"#0c4a6e",l:"Deep"}],
+    f: {h:"Pacifico", b:"Nunito", n:"Relaxed and sunny — feels like golden hour"},
+    s: {n:"Tropical Coast", b:["Ocean blues and golden sun","Organic flowing shapes","Warm light, long shadow effects"]},
+    c:"--color-ocean: #0891b2;\n--color-sun: #f59e0b;\n--color-lagoon: #10b981;\n--color-bg: #fffbeb;\n--color-text: #0c4a6e;\n--font-heading: 'Pacifico';\n--font-body: 'Nunito';"
+  },
+  {
+    k: ["nordic","scandinavian","scandi","winter","snow","fjord","minimalist","swedish","danish","oslo"],
+    p: [{h:"#e2e8f0",l:"Ice"},{h:"#334155",l:"Slate"},{h:"#64748b",l:"Stone"},{h:"#f8fafc",l:"Snow"},{h:"#0f172a",l:"Night"}],
+    f: {h:"Figtree", b:"Figtree", n:"Clean and structured — Scandinavian restraint"},
+    s: {n:"Nordic Frost", b:["Ice white and deep slate","Maximum whitespace, minimum decoration","Functional beauty — nothing wasted"]},
+    c:"--color-ice: #e2e8f0;\n--color-slate: #334155;\n--color-stone: #64748b;\n--color-bg: #f8fafc;\n--color-text: #0f172a;\n--font-heading: 'Figtree';\n--font-body: 'Figtree';"
+  },
+  {
+    k: ["gaming","gamer","esports","twitch","stream","fps","rpg","clan","tournament","competitive"],
+    p: [{h:"#a855f7",l:"Purple"},{h:"#22d3ee",l:"Cyan"},{h:"#f43f5e",l:"Red"},{h:"#09090b",l:"Black"},{h:"#e2e8f0",l:"Light"}],
+    f: {h:"Rajdhani", b:"Barlow", n:"Sharp and angular — built for fast reaction times"},
+    s: {n:"Esports Arena", b:["Purple and cyan on near-black","Aggressive geometry, sharp cutoffs","RGB-inspired gradient accents"]},
+    c:"--color-purple: #a855f7;\n--color-cyan: #22d3ee;\n--color-red: #f43f5e;\n--color-bg: #09090b;\n--color-text: #e2e8f0;\n--font-heading: 'Rajdhani';\n--font-body: 'Barlow';"
+  },
+  {
+    k: ["food","restaurant","menu","chef","cuisine","dining","bistro","eat","gastro","culinary","recipe"],
+    p: [{h:"#b45309",l:"Spice"},{h:"#166534",l:"Herb"},{h:"#dc2626",l:"Tomato"},{h:"#fffdf7",l:"Cream"},{h:"#1c1917",l:"Dark"}],
+    f: {h:"Playfair Display", b:"Lato", n:"Appetite-inducing warmth — food deserves great type"},
+    s: {n:"Culinary Craft", b:["Warm spice and herb tones","Generous white space between dishes","Tactile textures — linen, wood, stone"]},
+    c:"--color-spice: #b45309;\n--color-herb: #166534;\n--color-tomato: #dc2626;\n--color-bg: #fffdf7;\n--color-text: #1c1917;\n--font-heading: 'Playfair Display';\n--font-body: 'Lato';"
+  },
+  {
+    k: ["wedding","romance","romantic","love","bride","elegant","floral","soft","blush","wedding"],
+    p: [{h:"#f43f5e",l:"Rose"},{h:"#d4a5a5",l:"Blush"},{h:"#c084fc",l:"Lavender"},{h:"#fff5f5",l:"Ivory"},{h:"#2d1b1b",l:"Dark"}],
+    f: {h:"Cormorant Garamond", b:"Lato", n:"Romantic and refined — for life's biggest moments"},
+    s: {n:"Romantic Bloom", b:["Rose and blush with lavender grace","Delicate florals and thin strokes","Airy spacing, nothing heavy"]},
+    c:"--color-rose: #f43f5e;\n--color-blush: #d4a5a5;\n--color-lavender: #c084fc;\n--color-bg: #fff5f5;\n--color-text: #2d1b1b;\n--font-heading: 'Cormorant Garamond';\n--font-body: 'Lato';"
+  },
+  {
+    k: ["brutalist","brutal","raw","concrete","industrial","grunge","punk","harsh","bold","underground"],
+    p: [{h:"#000000",l:"Black"},{h:"#ffffff",l:"White"},{h:"#facc15",l:"Yellow"},{h:"#f5f5f5",l:"Off-White"},{h:"#171717",l:"Near Black"}],
+    f: {h:"Space Mono", b:"Space Mono", n:"Confrontational monospace — rejects decoration entirely"},
+    s: {n:"Brutalist Raw", b:["Pure black and white, yellow for violence","No border-radius, no shadows, no apology","Type as texture, layout as structure"]},
+    c:"--color-black: #000000;\n--color-white: #ffffff;\n--color-yellow: #facc15;\n--color-bg: #f5f5f5;\n--color-text: #171717;\n--font-heading: 'Space Mono';\n--font-body: 'Space Mono';"
+  },
+  {
+    k: ["fashion","editorial","magazine","vogue","haute","couture","style","runway","model","chic"],
+    p: [{h:"#0a0a0a",l:"Black"},{h:"#d4af37",l:"Gold"},{h:"#9ca3af",l:"Silver"},{h:"#fafafa",l:"White"},{h:"#374151",l:"Charcoal"}],
+    f: {h:"Bodoni Moda", b:"Didact Gothic", n:"High contrast editorial — fashion lives in the tension"},
+    s: {n:"High Fashion", b:["Black and white with gold tension","Extreme contrast in type weights","Asymmetric layouts, deliberate tension"]},
+    c:"--color-black: #0a0a0a;\n--color-gold: #d4af37;\n--color-silver: #9ca3af;\n--color-bg: #fafafa;\n--color-text: #374151;\n--font-heading: 'Bodoni Moda';\n--font-body: 'Didact Gothic';"
+  },
+  {
+    k: ["cyberpunk","neon","city","rain","dystopia","blade","runner","future","tech","glow"],
+    p: [{h:"#f0abfc",l:"Magenta"},{h:"#22d3ee",l:"Cyan"},{h:"#facc15",l:"Yellow"},{h:"#030712",l:"Black"},{h:"#e2e8f0",l:"Light"}],
+    f: {h:"Orbitron", b:"Share Tech Mono", n:"Neon-lit and angular — the city that never sleeps"},
+    s: {n:"Cyberpunk City", b:["Magenta and cyan on pure black","Hard neon glows on every element","Rainslick reflections and scan interference"]},
+    c:"--color-magenta: #f0abfc;\n--color-cyan: #22d3ee;\n--color-yellow: #facc15;\n--color-bg: #030712;\n--color-text: #e2e8f0;\n--font-heading: 'Orbitron';\n--font-body: 'Share Tech Mono';"
+  },
+  {
+    k: ["music","band","concert","album","indie","rock","jazz","vinyl","audio","podcast","sound"],
+    p: [{h:"#f97316",l:"Orange"},{h:"#1e1b4b",l:"Deep"},{h:"#fbbf24",l:"Amber"},{h:"#0f0a00",l:"Black"},{h:"#fef9c3",l:"Cream"}],
+    f: {h:"Bebas Neue", b:"IBM Plex Sans", n:"Loud and physical — the poster energy of live music"},
+    s: {n:"Music & Sound", b:["Orange fire on near-black depth","Poster-inspired bold type blocks","Grain texture over everything"]},
+    c:"--color-orange: #f97316;\n--color-deep: #1e1b4b;\n--color-amber: #fbbf24;\n--color-bg: #0f0a00;\n--color-text: #fef9c3;\n--font-heading: 'Bebas Neue';\n--font-body: 'IBM Plex Sans';"
+  },
+  {
+    k: ["art","creative","studio","gallery","artist","portfolio","design","illustration","craft","maker"],
+    p: [{h:"#6366f1",l:"Indigo"},{h:"#f59e0b",l:"Amber"},{h:"#ec4899",l:"Pink"},{h:"#fafafa",l:"White"},{h:"#111827",l:"Dark"}],
+    f: {h:"DM Serif Display", b:"DM Sans", n:"Expressive and human — art needs personality in type"},
+    s: {n:"Creative Studio", b:["Indigo and amber creative tension","Generous breathing room for work","Expressive display, neutral body"]},
+    c:"--color-indigo: #6366f1;\n--color-amber: #f59e0b;\n--color-pink: #ec4899;\n--color-bg: #fafafa;\n--color-text: #111827;\n--font-heading: 'DM Serif Display';\n--font-body: 'DM Sans';"
+  },
+  {
+    k: ["travel","adventure","explore","map","journey","wanderlust","nomad","hike","trek","discover"],
+    p: [{h:"#b45309",l:"Terra"},{h:"#065f46",l:"Pine"},{h:"#d97706",l:"Sand"},{h:"#fffbeb",l:"Cream"},{h:"#1c1917",l:"Earth"}],
+    f: {h:"Josefin Sans", b:"Lato", n:"Open and adventurous — inspired by trail markers and maps"},
+    s: {n:"Adventure Trail", b:["Terra cotta and pine on warm cream","Topographic texture and worn edges","All-caps utility labels, generous leading"]},
+    c:"--color-terra: #b45309;\n--color-pine: #065f46;\n--color-sand: #d97706;\n--color-bg: #fffbeb;\n--color-text: #1c1917;\n--font-heading: 'Josefin Sans';\n--font-body: 'Lato';"
+  },
+  {
+    k: ["sports","athletic","fitness","gym","workout","training","run","performance","athlete","sport"],
+    p: [{h:"#16a34a",l:"Green"},{h:"#111827",l:"Black"},{h:"#ffffff",l:"White"},{h:"#111827",l:"Dark"},{h:"#d1fae5",l:"Mint"}],
+    f: {h:"Barlow Condensed", b:"Barlow", n:"Condensed and powerful — built for performance"},
+    s: {n:"Athletic Performance", b:["Hard green on black with white relief","Condensed type with maximum impact","Motion blur and speed-line aesthetics"]},
+    c:"--color-green: #16a34a;\n--color-black: #111827;\n--color-white: #ffffff;\n--color-bg: #111827;\n--color-text: #d1fae5;\n--font-heading: 'Barlow Condensed';\n--font-body: 'Barlow';"
+  },
+  {
+    k: ["moroccan","boho","bohemian","earthy","desert","terracotta","clay","spice","ethnic","pattern"],
+    p: [{h:"#c2410c",l:"Terracotta"},{h:"#92400e",l:"Clay"},{h:"#d97706",l:"Turmeric"},{h:"#fdf4e3",l:"Sand"},{h:"#1c0a00",l:"Dark"}],
+    f: {h:"Playfair Display", b:"Crimson Text", n:"Rich and textured — the warmth of handmade things"},
+    s: {n:"Desert Boho", b:["Terracotta and turmeric on warm sand","Pattern-inspired geometric accents","Handcrafted imperfection is the aesthetic"]},
+    c:"--color-terracotta: #c2410c;\n--color-clay: #92400e;\n--color-turmeric: #d97706;\n--color-bg: #fdf4e3;\n--color-text: #1c0a00;\n--font-heading: 'Playfair Display';\n--font-body: 'Crimson Text';"
+  },
+  {
+    k: ["japanese","japan","wabi","sabi","minimalist","ink","zen","sakura","kyoto","manga"],
+    p: [{h:"#be123c",l:"Crimson"},{h:"#1e1e1e",l:"Sumi"},{h:"#d4b896",l:"Rice"},{h:"#faf8f5",l:"Washi"},{h:"#292524",l:"Dark"}],
+    f: {h:"Noto Serif", b:"Noto Sans", n:"Precise and measured — stillness in every stroke"},
+    s: {n:"Japanese Minimal", b:["Crimson accent on washi white","Massive negative space as design element","Grid and asymmetry in careful balance"]},
+    c:"--color-crimson: #be123c;\n--color-sumi: #1e1e1e;\n--color-rice: #d4b896;\n--color-bg: #faf8f5;\n--color-text: #292524;\n--font-heading: 'Noto Serif';\n--font-body: 'Noto Sans';"
+  },
+  {
+    k: ["crypto","web3","blockchain","defi","dao","nft","token","wallet","degen","protocol"],
+    p: [{h:"#f7931a",l:"Bitcoin"},{h:"#627eea",l:"Ethereum"},{h:"#00d395",l:"Green"},{h:"#0d0d0d",l:"Black"},{h:"#e2e8f0",l:"Light"}],
+    f: {h:"Space Grotesk", b:"IBM Plex Mono", n:"Technical and trustless — the language of protocols"},
+    s: {n:"Web3 Protocol", b:["Bitcoin orange and ETH blue on black","Monospace data readouts everywhere","Glowing borders, dark glass cards"]},
+    c:"--color-bitcoin: #f7931a;\n--color-eth: #627eea;\n--color-green: #00d395;\n--color-bg: #0d0d0d;\n--color-text: #e2e8f0;\n--font-heading: 'Space Grotesk';\n--font-body: 'IBM Plex Mono';"
+  },
+  {
+    k: ["horror","scary","dark","gothic","vampire","occult","halloween","spooky","witch","black"],
+    p: [{h:"#dc2626",l:"Blood"},{h:"#7c3aed",l:"Curse"},{h:"#6b7280",l:"Ash"},{h:"#0a0a0a",l:"Void"},{h:"#d1d5db",l:"Bone"}],
+    f: {h:"Cinzel", b:"Crimson Text", n:"Ancient and unsettling — carved in stone, dripping with dread"},
+    s: {n:"Gothic Horror", b:["Blood red and curse purple on void black","Serif decay with rough edges","High contrast, zero comfort"]},
+    c:"--color-blood: #dc2626;\n--color-curse: #7c3aed;\n--color-ash: #6b7280;\n--color-bg: #0a0a0a;\n--color-bone: #d1d5db;\n--font-heading: 'Cinzel';\n--font-body: 'Crimson Text';"
+  },
+  {
+    k: ["neon","glow","rave","club","party","nightclub","dj","electronic","edm","bass"],
+    p: [{h:"#39ff14",l:"Neon Green"},{h:"#ff00ff",l:"Magenta"},{h:"#00ffff",l:"Cyan"},{h:"#050505",l:"Black"},{h:"#ffffff",l:"White"}],
+    f: {h:"Orbitron", b:"Rajdhani", n:"Electric and relentless — designed to be seen at 3am"},
+    s: {n:"Neon Rave", b:["Pure neons on deepest black","Glow blur on every color element","Pulsing rhythm baked into the motion"]},
+    c:"--color-neon: #39ff14;\n--color-magenta: #ff00ff;\n--color-cyan: #00ffff;\n--color-bg: #050505;\n--color-text: #ffffff;\n--font-heading: 'Orbitron';\n--font-body: 'Rajdhani';"
   }
 ];
 
 function match(q) {
   const s = q.toLowerCase().trim();
   if (!s) return null;
-  let best = PROFILES[4], top = 0;
+  let best = null, top = 0;
   for (const p of PROFILES) {
-    const sc = p.k.filter(k => s.includes(k)).length;
+    let sc = 0;
+    for (const k of p.k) {
+      if (s === k) sc += 3;
+      else if (s.includes(k)) sc += 2;
+      else if (k.includes(s) && s.length > 2) sc += 1;
+    }
     if (sc > top) { top = sc; best = p; }
   }
-  return best;
+  return best || PROFILES[4];
 }
 
 var currentProfile = null;
